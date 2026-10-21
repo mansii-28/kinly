@@ -14,3 +14,14 @@ Fairly smooth once I was on the correct SDK generation. Going from `npm install`
 
 **Would I build with this again? Yes.**
 The protocol is well-designed and the Inspector tool made local testing genuinely pleasant. My main ask is just clearer guidance steering newcomers to the stable release.
+
+---
+
+**AWS services used (AWS Builder mini challenge):**
+I used Amazon DynamoDB to replace Kinly's local JSON file storage with real, persistent, shared storage. The server reads and writes a single JSON document to a DynamoDB table (KinlyData) using AWS SDK v3 (@aws-sdk/client-dynamodb and @aws-sdk/lib-dynamodb). I also used IAM to create a scoped-permission user and access key for this purpose.
+
+What worked well: creating a DynamoDB table and getting a working IAM user with CLI credentials was fast and well-documented, under 15 minutes end to end once I understood the setup.
+
+What needs work: my AWS account was created under the newer "Free Plan," and I didn't realize until I hit a blocking error that this plan restricts projects to a single assigned region (in my case, US East Ohio / us-east-2), with other commercial regions locked behind a plan upgrade. Nearly every AWS tutorial I found defaults its example code to us-east-1, so this mismatch cost real time to diagnose. A clearer signal about this restriction at account creation, not just as an error later, would help newcomers.
+
+Would I use DynamoDB again? Yes. Once I understood the region constraint, the actual read/write integration was simple and reliable.

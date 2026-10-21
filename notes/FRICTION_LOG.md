@@ -17,3 +17,21 @@
 - **Severity:** Medium (specific to real-world use, not a bug in our code)
 - **Workaround:** Deleted the local data file and added it to .gitignore to prevent stale data from polluting future tests.
 - **Suggested fix:** For a production voice assistant use case, matching tasks by exact text alone is fragile when duplicates exist. A real implementation should likely use short IDs or timestamps a user can reference, or de-duplicate on add.
+
+## Entry 3
+- **Task attempted:** Create a DynamoDB table in us-east-1 for the AWS Builder mini challenge, following typical AWS tutorial defaults.
+- **Steps taken:** Created a new AWS account under AWS's newer "Free Plan" (the current default for new sign-ups), then attempted to switch the console region to US East (N. Virginia) / us-east-1.
+- **Expected result:** The region switch would succeed like on any standard AWS account.
+- **Actual result:** The console blocked it with: "Region United States (N. Virginia) unavailable... Your project is assigned to United States (Ohio) us-east-2... To access other commercial AWS Regions, upgrade your plan first." Free Plan accounts are locked to a single assigned region.
+- **Severity:** Medium
+- **Workaround:** Used us-east-2 consistently across the DynamoDB table, the local AWS CLI config, and the application code.
+- **Suggested fix:** Most introductory AWS tutorials and sample code default to us-east-1, so this mismatch cost real debugging time as a newcomer. A clearer signal about this single-region restriction at account creation time, not just as a blocking error later, would help new Free Plan users avoid this entirely.
+
+## Entry 4
+- **Task attempted:** Confirm the MCP server negotiates protocol version 2025-11-25, as required by the hackathon track rules.
+- **Steps taken:** Inspected the "initialize" request/response entry in the MCP Inspector's History panel.
+- **Expected result:** The full JSON-RPC response, including the protocolVersion field, visible in the UI.
+- **Actual result:** The UI rendered only the capabilities and serverInfo fields; protocolVersion wasn't shown anywhere in the expanded view.
+- **Severity:** Low
+- **Workaround:** Sent a raw curl POST request directly to the server's /mcp endpoint, which returned the full JSON-RPC payload and confirmed protocolVersion: "2025-11-25".
+- **Suggested fix:** Inspector could display the full raw initialize response, or offer a "copy raw JSON" option, so developers can verify protocol-level details without dropping to manual HTTP requests.

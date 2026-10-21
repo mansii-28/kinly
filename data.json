@@ -1,9 +1,9 @@
 {
   "tasks": [
     {
-      "id": "0a944da5-bd17-486c-9ba6-5649fd024e68",
-      "text": "Buy milk",
-      "done": false
+      "id": "f5ca7609-3f98-4356-bc68-3a6d1e6a35f9",
+      "text": "buy milk",
+      "done": true
     }
   ],
   "checkins": []

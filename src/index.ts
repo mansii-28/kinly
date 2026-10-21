@@ -75,6 +75,28 @@ function buildServer() {
   );
 
   server.tool(
+    "complete_task",
+    "Mark a household task as done by matching its text.",
+    { text: z.string().describe("Text or partial text of the task to complete") },
+    async ({ text }) => {
+      const db = loadDb();
+      const match = db.tasks.find(
+        (t) => !t.done && t.text.toLowerCase().includes(text.toLowerCase())
+      );
+      if (!match) {
+        return {
+          content: [{ type: "text", text: `No open task found matching "${text}".` }],
+        };
+      }
+      match.done = true;
+      saveDb(db);
+      return {
+        content: [{ type: "text", text: `Marked "${match.text}" as done.` }],
+      };
+    }
+  );
+
+  server.tool(
     "get_family_summary",
     "Get a combined summary of open tasks and recent care check-ins.",
     {},

@@ -14,17 +14,17 @@ Kinly exposes a small set of MCP tools that give an assistant persistent, shared
 - **list_tasks** — list all open household tasks
 - **complete_task** — mark a task done by matching its text
 - **log_checkin** — log a wellness or medication check-in for a family member
-- **get_family_summary** — a combined natural-language view of open tasks and recent check-ins
+- **get_family_summary** — a combined natural-language view of open tasks, recent check-ins, and overdue alerts for anyone who hasn't checked in within 24 hours
 
-State persists across sessions and across different people asking, so one family member can log something and another can ask about it later.
+State persists across sessions and across different people asking, backed by AWS DynamoDB, so one family member can log something and another can ask about it later, from anywhere.
 
 ## Tech stack
 
 - Node.js + TypeScript
-- `@modelcontextprotocol/sdk` (stable v1 generation, supports MCP spec 2025-11-25)
+- `@modelcontextprotocol/sdk` (stable v1 generation, verified to negotiate MCP protocol version 2025-11-25)
 - Express, with the Streamable HTTP transport
 - Zod for input validation
-- Simple JSON file storage
+- AWS DynamoDB for persistent, shared storage (AWS Builder mini challenge)
 
 ## Setup
 

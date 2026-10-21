@@ -98,12 +98,24 @@ function buildServer() {
 
   server.tool(
     "get_family_summary",
-    "Get a combined summary of open tasks and recent care check-ins.",
+    "Get a combined summary of open tasks, recent care check-ins, and overdue alerts.",
     {},
     async () => {
       const db = loadDb();
       const openTasks = db.tasks.filter((t) => !t.done);
       const recentCheckins = db.checkins.slice(-5).reverse();
+
+      const OVERDUE_HOURS = 24;
+      const now = Date.now();
+      const lastCheckinByPerson: Record<string, string> = {};
+      for (const c of db.checkins) {
+        if (!lastCheckinByPerson[c.person] || c.time > lastCheckinByPerson[c.person]) {
+          lastCheckinByPerson[c.person] = c.time;
+        }
+      }
+      const overduePeople = Object.entries(lastCheckinByPerson)
+        .filter(([, time]) => now - new Date(time).getTime() > OVERDUE_HOURS * 60 * 60 * 1000)
+        .map(([person]) => person);
 
       let text = "--- Kinly Family Summary ---\n\n";
       text += `Open tasks (${openTasks.length}):\n`;
@@ -116,6 +128,12 @@ function buildServer() {
             .map((c) => `  - ${c.person}: ${c.note} (${c.time})`)
             .join("\n")
         : "  (none yet)";
+      text += "\n\nAlerts:\n";
+      text += overduePeople.length
+        ? overduePeople
+            .map((p) => `  - ${p} has not checked in for over ${OVERDUE_HOURS} hours`)
+            .join("\n")
+        : "  (none, everyone is up to date)";
 
       return { content: [{ type: "text", text }] };
     }

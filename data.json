@@ -6,5 +6,12 @@
       "done": true
     }
   ],
-  "checkins": []
+  "checkins": [
+    {
+      "id": "0ec084a7-b2d9-4a2a-b1cf-f4ee5529fd32",
+      "person": "mom",
+      "note": "took morning meds",
+      "time": "2026-10-19T04:34:53.018Z"
+    }
+  ]
 }
